@@ -3,10 +3,10 @@ import re
 import sqlite3
 from io import BytesIO
 from datetime import datetime
+
 import pytesseract
 import fitz
 from PIL import Image
-
 
 import streamlit as st
 import pandas as pd
