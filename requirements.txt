@@ -1,4 +1,4 @@
-
+```text
 streamlit
 pypdf
 scikit-learn
@@ -6,3 +6,8 @@ sentence-transformers
 plotly
 pandas
 reportlab
+pytesseract
+Pillow
+PyMuPDF
+python-docx
+```
