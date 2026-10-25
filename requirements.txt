@@ -1,4 +1,3 @@
-```text
 streamlit
 pypdf
 scikit-learn
@@ -10,4 +9,4 @@ pytesseract
 Pillow
 PyMuPDF
 python-docx
-```
+
