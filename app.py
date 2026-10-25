@@ -3,6 +3,10 @@ import re
 import sqlite3
 from io import BytesIO
 from datetime import datetime
+import pytesseract
+import fitz
+from PIL import Image
+
 
 import streamlit as st
 import pandas as pd
@@ -208,12 +212,38 @@ SKILLS = [
 ]
 
 
+
 def extract_text(pdf_file):
+    pdf_file.seek(0)
     reader = PdfReader(pdf_file)
-    return "\n".join(
+
+    extracted_pages = [
         page.extract_text() or ""
         for page in reader.pages
-    )
+    ]
+
+    if all(text.strip() for text in extracted_pages):
+        return "\n".join(extracted_pages)
+
+    pdf_bytes = pdf_file.getvalue()
+    ocr_pages = []
+
+    with fitz.open(stream=pdf_bytes, filetype="pdf") as document:
+        for index, page in enumerate(document):
+            text = extracted_pages[index]
+
+            if text.strip():
+                ocr_pages.append(text)
+            else:
+                pix = page.get_pixmap(
+                    matrix=fitz.Matrix(2, 2),
+                    alpha=False
+                )
+                image = Image.open(BytesIO(pix.tobytes("png")))
+                text = pytesseract.image_to_string(image)
+                ocr_pages.append(text)
+
+    return "\n".join(ocr_pages)
 
 
 def find_skills(text):
